@@ -1,6 +1,6 @@
 package com.zhalgas.crmliteapi.customer;
 
-
+import com.zhalgas.crmliteapi.exception.ResourceNotFoundException;
 import com.zhalgas.crmliteapi.customer.dto.CustomerRequest;
 import com.zhalgas.crmliteapi.customer.dto.CustomerResponse;
 import com.zhalgas.crmliteapi.user.User;
@@ -8,6 +8,7 @@ import com.zhalgas.crmliteapi.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class CustomerService {
     @Transactional
     public CustomerResponse create(CustomerRequest request) {
         User owner = userRepository.findById(request.ownerId())
-                .orElseThrow(() -> new IllegalArgumentException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Owner id not found: " + request.ownerId()
                 ));
 
@@ -45,7 +46,7 @@ public class CustomerService {
     @Transactional(readOnly = true)
     public CustomerResponse findById(Long id) {
         Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Customer id not found: " + id
                 ));
         return customerMapper.toResponse(customer);
@@ -54,12 +55,12 @@ public class CustomerService {
     @Transactional
     public CustomerResponse update(Long id, CustomerRequest request) {
         Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Customer id not found: " + id
                 ));
 
         User owner = userRepository.findById(request.ownerId())
-                .orElseThrow(() -> new IllegalArgumentException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Owner id not found: " + request.ownerId()
                 ));
 
@@ -78,7 +79,7 @@ public class CustomerService {
     @Transactional
     public void deleteById(Long id) {
         if (!customerRepository.existsById(id)) {
-            throw new IllegalArgumentException(
+            throw new ResourceNotFoundException(
                     "Customer id not found: " + id
             );
         }
