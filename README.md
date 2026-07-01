@@ -31,3 +31,26 @@ CRM Lite API is a simple backend application for managing customers in a CRM sys
 
 ```bash
 docker compose up -d
+```
+
+## Run Application
+
+```bash
+./mvnw spring-boot:run
+```
+
+## Run Tests
+
+```bash
+./mvnw test
+```
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/customers` | Create customer |
+| GET | `/api/customers` | Get all customers |
+| GET | `/api/customers/{id}` | Get customer by id |
+| PUT | `/api/customers/{id}` | Update customer |
+| DELETE | `/api/customers/{id}` | Delete customer |
